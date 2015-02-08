@@ -1,0 +1,94 @@
+<!DOCTYPE html>    
+<head>
+    <meta charset="utf-8">
+    <title>Tetris</title>
+<style>
+html, body {
+width: 100%;
+height: 100%;
+margin: 0px;
+border: 0;
+overflow: hidden; /*  Disable scrollbars */
+display: block;  /* No floating content on sides */
+}
+</style>
+</head>
+ 
+<body>
+ 
+<canvas id='c' style = 'position: absolute; left: 0px; top: 0px;' >
+</canvas>
+<script>
+(function() {
+var
+// Obtain a reference to the canvas element
+// using its id.
+htmlCanvas = document.getElementById('c'),
+   // Obtain a graphics context on the
+   // canvas element for drawing.
+   context = htmlCanvas.getContext('2d');
+ 
+// Start listening to resize events and
+// draw canvas.
+initialize();
+ var prevTime = (new Date()).getTime();
+	var mainLoop = function(timestamp){
+		redraw();
+		window.requestAnimationFrame(mainLoop);
+	}
+
+	window.requestAnimationFrame(mainLoop);
+function initialize() {
+// Register an event listener to
+// call the resizeCanvas() function each time
+// the window is resized.
+window.addEventListener('resize', resizeCanvas, false);
+// Draw canvas border for the first time.
+resizeCanvas();
+}
+var angle = 0;
+// Display custom canvas.
+// In this case it's a blue, 5 pixel border that
+// resizes along with the browser window.
+function redraw() {
+
+
+	var currTime = (new Date()).getTime();
+	var dt = currTime - prevTime;
+
+	prevTime = currTime;
+
+
+	console.log(dt);
+context.clearRect(0, 0, htmlCanvas.width, htmlCanvas.height);
+context.strokeStyle = 'blue';
+context.lineWidth = '20';
+context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+
+
+var rectWidth = 300;
+     var rectHeight = 400;
+
+      // translate context to center of canvas
+      context.translate(htmlCanvas.width / 2, htmlCanvas.height / 2);
+      // rotate 45 degrees clockwise
+      context.rotate(angle);
+
+	  angle+=0.001*dt;
+      context.fillStyle = 'blue';
+      context.fillRect(rectWidth / -2, rectHeight / -2, rectWidth, rectHeight);
+context.setTransform(1, 0, 0, 1, 0, 0);
+}
+// Runs each time the DOM window resize event fires.
+// Resets the canvas dimensions to match window,
+// then draws the new borders accordingly.
+function resizeCanvas() {
+htmlCanvas.width = window.innerWidth;
+htmlCanvas.height = window.innerHeight;
+redraw();
+}
+})();
+</script>
+</body>
+ 
+</html>
