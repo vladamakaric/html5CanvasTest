@@ -9,10 +9,12 @@ var VIEW = (function(interf){
 		var pressTime;
 		var img;
 		var resourceLoad = false;
+		var pointerPos;
 		this.init = function(){
 			window.addEventListener('resize', resizeCanvas, false);
 			window.addEventListener('touchend', onRelease, false);	
 			window.addEventListener('touchstart', onPress, false);	
+			window.addEventListener('touchmove', onMove, false);
 		    img = new Image;
 			img.onload = function(){
 			resourceLoad = true;
@@ -27,13 +29,32 @@ var VIEW = (function(interf){
 			redraw(dt);
 		}
 
-		function onPress(){
-			press = true;
+
+		function getPointerPos(e) {
+			if (e.touches !== undefined && e.touches.length == 1) {
+				return {x: e.touches[0].pageX, y: e.touches[0].pageY};	
+			}
+			else {
+				return {x: e.pageX, y: e.pageY};	
+			}
 		}
 
-		function onRelease(){
-			release = true;
+
+		function onMove(event){
+			event.preventDefault();
+			pointerPos = getPointerPos(event);
 		}
+		function onPress(event){
+			press = true;
+			
+			pointerPos = getPointerPos(event);
+		}
+
+		function onRelease(event){
+			release = true;
+			pointerPos = getPointerPos(event);
+		}
+
 		function resizeCanvas() {
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
@@ -50,11 +71,9 @@ var VIEW = (function(interf){
 			}
 			
 			if(release){
-
-			var delta = (new Date()).getTime() - pressTime;
-
-			alert(delta);
-			release = false;
+				var delta = (new Date()).getTime() - pressTime;
+				alert(pointerPos.x + ' y: ' + pointerPos.y);
+				release = false;
 			}
 
 		var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
