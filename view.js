@@ -20,11 +20,11 @@ var VIEW = (function(interf){
 
 		function onPress(){
 			pressTime = (new Date()).getTime();
+			alert(pressTime);
 		}
 
 		function onRelease(){
 			var delta = (new Date()).getTime() - pressTime;
-			alert(delta);
 		}
 		function resizeCanvas() {
 			htmlCanvas.width = window.innerWidth;
