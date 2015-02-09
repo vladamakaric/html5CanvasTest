@@ -19,10 +19,13 @@ var VIEW = (function(interf){
 
 		function onPress(){
 
+			console.log('touchStart');
 			pressTime = (new Date()).getTime();
 		}
+
 		function onRelease(){
 
+			console.log('touchRelease');
 			var delta = (new Date()).getTime() - pressTime;
 			alert(delta);
 		}
