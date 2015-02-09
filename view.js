@@ -76,7 +76,7 @@ var VIEW = (function(interf){
 				release = false;
 			}
 
-		var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+		var grd = context.createLinearGradient(0, 0, 0, canvas.height);
       // light blue
       grd.addColorStop(0, '#8ED6FF');   
       // dark blue
