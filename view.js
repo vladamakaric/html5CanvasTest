@@ -17,7 +17,7 @@ var VIEW = (function(interf){
 			img.onload = function(){
 			resourceLoad = true;
 			};
-			img.src = "http://blackicemedia.com/presentations/2013-02-hires/img/awesome_tiger.svg";
+			img.src = "http://www.sastrugimarketing.com/art/svg-logo.svg";
 			resizeCanvas();
 		}
 
