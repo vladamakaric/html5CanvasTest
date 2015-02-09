@@ -8,8 +8,8 @@ var VIEW = (function(interf){
 		var pressTime;
 		this.init = function(){
 			window.addEventListener('resize', resizeCanvas, false);
-			window.addEventListener('mouseup', onRelease, false);	
-			window.addEventListener('mousedown', onPress, false);	
+			window.addEventListener('touchend', onRelease, false);	
+			window.addEventListener('touchstart', onPress, false);	
 			resizeCanvas();
 		}
 
