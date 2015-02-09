@@ -8,8 +8,9 @@ var VIEW = (function(interf){
 		var pressTime;
 		this.init = function(){
 			window.addEventListener('resize', resizeCanvas, false);
-			window.addEventListener('touchend', onRelease, false);	
-			window.addEventListener('touchstart', onPress, false);	
+
+			$( document ).on( "vmousedown", onPress); 
+			$( document ).on( "vmouseup", onRelease); 
 			resizeCanvas();
 		}
 
@@ -18,14 +19,12 @@ var VIEW = (function(interf){
 		}
 
 		function onPress(){
-			alert('touchStart');
 			pressTime = (new Date()).getTime();
 		}
 
 		function onRelease(){
-
-			alert('touchRelease');
 			var delta = (new Date()).getTime() - pressTime;
+			alert(delta);
 		}
 		function resizeCanvas() {
 			htmlCanvas.width = window.innerWidth;
