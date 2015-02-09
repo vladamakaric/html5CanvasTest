@@ -5,12 +5,14 @@ var VIEW = (function(interf){
 		var context = htmlCanvas.getContext('2d');
 		var angle = 0;
 
+	
+		var press = false;
+		var release = false;
 		var pressTime;
 		this.init = function(){
 			window.addEventListener('resize', resizeCanvas, false);
-
-			$( document ).on( "vmousedown", onPress); 
-			$( document ).on( "vmouseup", onRelease); 
+			window.addEventListener('touchend', onRelease, false);	
+			window.addEventListener('touchstart', onPress, false);	
 			resizeCanvas();
 		}
 
@@ -19,12 +21,11 @@ var VIEW = (function(interf){
 		}
 
 		function onPress(){
-			pressTime = (new Date()).getTime();
-			alert(pressTime);
+			press = true;
 		}
 
 		function onRelease(){
-			var delta = (new Date()).getTime() - pressTime;
+			release = true;
 		}
 		function resizeCanvas() {
 			htmlCanvas.width = window.innerWidth;
@@ -32,6 +33,22 @@ var VIEW = (function(interf){
 		}
 
 		function redraw(dt) {
+
+			if(press){
+
+			pressTime = (new Date()).getTime();
+
+			press = false;
+
+			}
+			
+			if(release){
+
+			var delta = (new Date()).getTime() - pressTime;
+
+			alert(delta);
+			release = false;
+			}
 			context.clearRect(0, 0, htmlCanvas.width, htmlCanvas.height);
 			context.strokeStyle = 'blue';
 			context.lineWidth = '20';
