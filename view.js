@@ -4,19 +4,26 @@ var VIEW = (function(interf){
 		var htmlCanvas = document.getElementById('c');
 		var context = htmlCanvas.getContext('2d');
 		var angle = 0;
-
-	
 		var press = false;
 		var release = false;
 		var pressTime;
+		var img;
+		var resourceLoad = false;
 		this.init = function(){
 			window.addEventListener('resize', resizeCanvas, false);
 			window.addEventListener('touchend', onRelease, false);	
 			window.addEventListener('touchstart', onPress, false);	
+		    img = new Image;
+			img.onload = function(){
+			resourceLoad = true;
+			};
+			img.src = "http://blackicemedia.com/presentations/2013-02-hires/img/awesome_tiger.svg";
 			resizeCanvas();
 		}
 
 		this.loop = function(dt){
+			if(!resourceLoad) return;
+
 			redraw(dt);
 		}
 
@@ -56,13 +63,13 @@ var VIEW = (function(interf){
 
 			var rectWidth = 300;
 			var rectHeight = 400;
-
+			
 			context.translate(htmlCanvas.width / 2, htmlCanvas.height / 2);
 			context.rotate(angle);
-
+			context.scale(0.5, 0.5);
+			context.translate(-img.width/2, -img.height/2);
 			angle+=0.001*dt;
-			context.fillStyle = 'blue';
-			context.fillRect(rectWidth / -2, rectHeight / -2, rectWidth, rectHeight);
+			context.drawImage(img,0,0);
 			context.setTransform(1, 0, 0, 1, 0, 0);
 		}
 	}
