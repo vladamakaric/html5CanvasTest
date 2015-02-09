@@ -1,8 +1,8 @@
 var VIEW = (function(interf){
 
 	interf.View = function(){
-		var htmlCanvas = document.getElementById('c');
-		var context = htmlCanvas.getContext('2d');
+		var canvas = document.getElementById('c');
+		var context = canvas.getContext('2d');
 		var angle = 0;
 		var press = false;
 		var release = false;
@@ -35,8 +35,8 @@ var VIEW = (function(interf){
 			release = true;
 		}
 		function resizeCanvas() {
-			htmlCanvas.width = window.innerWidth;
-			htmlCanvas.height = window.innerHeight;
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
 		}
 
 		function redraw(dt) {
@@ -56,15 +56,17 @@ var VIEW = (function(interf){
 			alert(delta);
 			release = false;
 			}
-			context.clearRect(0, 0, htmlCanvas.width, htmlCanvas.height);
-			context.strokeStyle = 'blue';
-			context.lineWidth = '20';
-			context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
 
-			var rectWidth = 300;
-			var rectHeight = 400;
-			
-			context.translate(htmlCanvas.width / 2, htmlCanvas.height / 2);
+		var grd = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+      // light blue
+      grd.addColorStop(0, '#8ED6FF');   
+      // dark blue
+      grd.addColorStop(1, '#004CB3');
+      context.fillStyle = grd;
+
+context.fillRect(0, 0, canvas.width, canvas.height);
+					
+			context.translate(canvas.width / 2, canvas.height / 2);
 			context.rotate(angle);
 			context.scale(0.5, 0.5);
 			context.translate(-img.width/2, -img.height/2);
