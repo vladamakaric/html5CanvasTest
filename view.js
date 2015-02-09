@@ -18,16 +18,14 @@ var VIEW = (function(interf){
 		}
 
 		function onPress(){
-
-			console.log('touchStart');
+			alert('touchStart');
 			pressTime = (new Date()).getTime();
 		}
 
 		function onRelease(){
 
-			console.log('touchRelease');
+			alert('touchRelease');
 			var delta = (new Date()).getTime() - pressTime;
-			alert(delta);
 		}
 		function resizeCanvas() {
 			htmlCanvas.width = window.innerWidth;
