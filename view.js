@@ -1,5 +1,10 @@
 var VIEW = (function(interf){
 
+	interf.Event = { 
+		press: false,
+		release: false,
+		pointerPos: {x:0, y:0}};
+
 	interf.View = function(){
 		var canvas = document.getElementById('c');
 		var context = canvas.getContext('2d');
@@ -9,12 +14,16 @@ var VIEW = (function(interf){
 		var pressTime;
 		var img;
 		var resourceLoad = false;
-		var pointerPos;
+		var pointerPos= {x:0,y:0};
+
+		var deltaAngle = 0; 
+
 		this.init = function(){
 			window.addEventListener('resize', resizeCanvas, false);
 			window.addEventListener('touchend', onRelease, false);	
 			window.addEventListener('touchstart', onPress, false);	
 			window.addEventListener('touchmove', onMove, false);
+
 		    img = new Image;
 			img.onload = function(){
 			resourceLoad = true;
@@ -39,11 +48,11 @@ var VIEW = (function(interf){
 			}
 		}
 
-
 		function onMove(event){
 			event.preventDefault();
 			pointerPos = getPointerPos(event);
 		}
+
 		function onPress(event){
 			press = true;
 			
@@ -61,35 +70,61 @@ var VIEW = (function(interf){
 		}
 
 		function redraw(dt) {
+			if(interf.Event.release){
+				interf.Event.release = false;
+			}
 
 			if(press){
-
-			pressTime = (new Date()).getTime();
-
-			press = false;
-
+				press = false;
+				interf.Event.press = true;
 			}
 			
 			if(release){
-				var delta = (new Date()).getTime() - pressTime;
-				alert(pointerPos.x + ' y: ' + pointerPos.y);
 				release = false;
+				interf.Event.release = true;
+				interf.Event.press = false;
+
+				if(pointerPos.x < canvas.width/2)
+					deltaAngle = Math.PI/2;
+				else
+				{
+					deltaAngle = -Math.PI/2;
+				}
 			}
 
-		var grd = context.createLinearGradient(0, 0, 0, canvas.height);
-      // light blue
-      grd.addColorStop(0, '#8EF6FF');   
-      // dark blue
-      grd.addColorStop(1, '#004CB3');
-      context.fillStyle = grd;
+			VIEW.Event.pointerPos.x = pointerPos.x;
+			VIEW.Event.pointerPos.y = pointerPos.y;
 
-context.fillRect(0, 0, canvas.width, canvas.height);
-					
+			var grd = context.createLinearGradient(0, 0, 0, canvas.height);
+			// light blue
+			grd.addColorStop(0, '#8EF6FF');   
+			// dark blue
+			grd.addColorStop(1, '#004CB3');
+			context.fillStyle = grd;
+
+			context.fillRect(0, 0, canvas.width, canvas.height);
+	
 			context.translate(canvas.width / 2, canvas.height / 2);
 			context.rotate(angle);
-			context.scale(0.5, 0.5);
+
+			
+			var diag = Math.sqrt(img.width*img.width+ img.height*img.height);
+			var scale = Math.min(canvas.width/diag, canvas.height/diag);
+			context.scale(scale, scale);
 			context.translate(-img.width/2, -img.height/2);
-			angle+=0.001*dt;
+
+			if(Math.abs(deltaAngle) > 0.06){
+				var e = 0.05;
+				if(deltaAngle>0){
+					angle -= e;
+					deltaAngle -=e;
+				}else {
+					angle += e;
+					deltaAngle +=e;
+				}
+
+			}else { angle -= deltaAngle; deltaAngle = 0;}
+
 			context.drawImage(img,0,0);
 			context.setTransform(1, 0, 0, 1, 0, 0);
 		}
