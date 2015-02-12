@@ -28,7 +28,7 @@ var VIEW = (function(interf){
 			img.onload = function(){
 			resourceLoad = true;
 			};
-			img.src = "http://www.sastrugimarketing.com/art/svg-logo.svg";
+			img.src = "res/svg-logo.svg";
 			resizeCanvas();
 		}
 
@@ -84,11 +84,12 @@ var VIEW = (function(interf){
 				interf.Event.release = true;
 				interf.Event.press = false;
 
+				
 				if(pointerPos.x < canvas.width/2)
-					deltaAngle = Math.PI/2;
+					deltaAngle += Math.PI/2;
 				else
 				{
-					deltaAngle = -Math.PI/2;
+					deltaAngle += -Math.PI/2;
 				}
 			}
 
